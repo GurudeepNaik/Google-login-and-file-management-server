@@ -4,6 +4,7 @@ const cors=require("cors");
 const mongoose=require("mongoose");
 const route = require("./Routes/routes");
 const register = require("./Routes/register");
+const verifyUser=require("./middleware/verifyUser")
 const app = express();
 const PORT=7000;
 
@@ -24,7 +25,9 @@ app.use("/register", register);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/Files/:name", async (req, res) => {
+
+
+app.get("/Files/:name/:email", verifyUser , async (req, res) => {
     try {
       res.sendFile(__dirname + `/uploads/${req.params.name}`);
     } catch (err) {
